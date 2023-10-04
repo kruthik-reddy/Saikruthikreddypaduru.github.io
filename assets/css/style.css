@@ -550,6 +550,12 @@ small {
 
 .teal-text {
   color: #008073 !important;
+  margin-left: -40px;
+}
+
+.teal-text-1 {
+  color: #008073 !important;
+  /* margin-left: -40px; */
 }
 
 /* .teal-text {
