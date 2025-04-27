@@ -2,23 +2,30 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: ["main"]            # default branch
+    branches: [main]
   workflow_dispatch:
 
 permissions:
-  contents: read                  # to fetch repo content
-  pages: write                    # to deploy to GitHub Pages
-  id-token: write                 # to verify the deployment
+  contents: read
+  pages: write
+  id-token: write
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4            # latest checkout action
-      - uses: actions/configure-pages@v3
-      - uses: actions/upload-pages-artifact@v1
+      - uses: actions/checkout@v4
+
+      # Keeps Pages settings in sync with the job’s environment
+-     - uses: actions/configure-pages@v3
++     - uses: actions/configure-pages@v4   # optional but recommended
+
+      # Package site files for deployment
+-     - uses: actions/upload-pages-artifact@v1
++     - uses: actions/upload-pages-artifact@v2   # ← must be v2 (uses upload-artifact@v4)
         with:
-          path: '.'                          # everything in the repo
+          path: '.'          # or '_site', 'dist', etc.
+
   deploy:
     needs: build
     runs-on: ubuntu-latest
@@ -27,4 +34,4 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - id: deployment
-        uses: actions/deploy-pages@v2
+        uses: actions/deploy-pages@v2       # already on v2 👍
